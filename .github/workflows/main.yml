@@ -26,18 +26,18 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Clone parallax repo
+        run: git clone https://github.com/graffiti-garden/parallax.git source
+      - name: Move to root
+        run: mv source/* .
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: "npm"
-      - name: Clone parallax repo
-        run: git clone https://github.com/graffiti-garden/parallax.git source
       - name: Install dependencies
-        working-directory: ./source
         run: npm install
       - name: Build
-        working-directory: ./source
         run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -45,7 +45,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload dist repository
-          path: "./source/dist"
+          path: "./dist"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
